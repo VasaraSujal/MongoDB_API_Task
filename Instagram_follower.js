@@ -37,15 +37,17 @@ initializeDatabase();
 
 // Routes
 
-// GET: List all students
-app.get('/users/userId/followers', async (req, res) => {
+app.get('/users/:userId/followers', async (req, res) => {
     try {
-        const allfollowers = await followers.find().toArray();
-        res.status(200).json(allfollowers);
+        const  userId=req.params.userId
+        const allposts = await followers.find({userId}).toArray();
+        res.status(200).json(allposts);
     } catch (err) {
-        res.status(500).send("Error fetching followers: " + err.message);
+        res.status(500).send("Error fetching students: " + err.message);
     }
 });
+
+
 
 // //POST: Add a new student
 app.post('/followers', async (req, res) => {

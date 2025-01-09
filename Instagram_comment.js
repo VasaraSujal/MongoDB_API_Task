@@ -38,12 +38,14 @@ initializeDatabase();
 // Routes
 
 // GET: List all students
-app.get('/comments', async (req, res) => {
+
+app.get('/posts/:postId/comments', async (req, res) => {
     try {
-        const allcomments = await comments.find().toArray();
-        res.status(200).json(allcomments);
+        const  postId=req.params.postId
+        const allposts = await comments.find({postId}).toArray();
+        res.status(200).json(allposts);
     } catch (err) {
-        res.status(500).send("Error fetching comments: " + err.message);
+        res.status(500).send("Error fetching students: " + err.message);
     }
 });
 
@@ -62,7 +64,7 @@ app.post('/comments', async (req, res) => {
 //PATCH: Partially update a student
 app.patch('/comments/:commentId/likes', async (req, res) => {
     try {
-        const commentId = req.params.commentId;
+        const commentId = req.params.commentId
         const updates = req.body;
         const result = await comments.updateOne({ commentId }, { $set: updates });
         res.status(200).send(`${result.modifiedCount} document(s) updated`);
